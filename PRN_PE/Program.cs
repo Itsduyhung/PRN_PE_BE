@@ -3,7 +3,7 @@ using PRN_PE.Data;
 using PRN_PE.Interfaces;
 using PRN_PE.Repositories;
 using PRN_PE.Services;
-using Microsoft.Extensions.Options; // Cần thiết để sử dụng IOptions và Configure<T>
+using Microsoft.Extensions.Options;
 
 namespace PRN_PE
 {
@@ -16,7 +16,7 @@ namespace PRN_PE
             // Add services to the container.
             builder.Services.AddControllers();
 
-            // ✅ Add Swagger
+            // ✅ Add Swagger (Đăng ký dịch vụ Swagger)
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -25,26 +25,28 @@ namespace PRN_PE
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
 
-            // 💡 BƯỚC ĐÃ THÊM: Đăng ký cấu hình CloudinarySettings
-            // Dòng này đọc section "CloudinarySettings" từ appsettings.json
-            // và ánh xạ nó vào class CloudinarySettings.
+            // 💡 Đăng ký cấu hình CloudinarySettings
             builder.Services.Configure<CloudinarySettings>(
                 builder.Configuration.GetSection("CloudinarySettings"));
 
             // ✅ Register repositories, services, and interfaces
             builder.Services.AddScoped<IPostRepository, PostRepository>();
             builder.Services.AddScoped<IPostService, PostService>();
-
-            // Dòng này đăng ký dịch vụ (Service), nó phải nằm SAU dòng đăng ký cấu hình ở trên.
             builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+
+            // 🚨 SỬA LỖI: Di chuyển Swagger ra khỏi khối IsDevelopment()
+
+            // Dùng Swagger và SwaggerUI trong MỌI môi trường
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                // Bạn có thể đặt các thiết lập Dev khác ở đây nếu cần, nhưng không cần cho Swagger
             }
 
             app.UseHttpsRedirection();
