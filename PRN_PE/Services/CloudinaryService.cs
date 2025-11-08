@@ -62,7 +62,7 @@ namespace PRN_PE.Services
 
             if (uploadResult.StatusCode == System.Net.HttpStatusCode.OK || uploadResult.StatusCode == System.Net.HttpStatusCode.Created)
             {
-                return uploadResult.SecureUri.ToString();
+                return uploadResult.SecureUrl.ToString();
             }
 
             // Ném exception chi tiết hơn nếu upload thất bại
