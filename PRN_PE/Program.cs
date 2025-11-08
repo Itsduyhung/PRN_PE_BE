@@ -4,6 +4,7 @@ using PRN_PE.Interfaces;
 using PRN_PE.Repositories;
 using PRN_PE.Services;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks; // Cần thiết cho Task.CompletedTask
 
 namespace PRN_PE
 {
@@ -38,15 +39,20 @@ namespace PRN_PE
 
             // Configure the HTTP request pipeline.
 
-            // 🚨 SỬA LỖI: Di chuyển Swagger ra khỏi khối IsDevelopment()
-
-            // Dùng Swagger và SwaggerUI trong MỌI môi trường
+            // 1. Bật Swagger trong MỌI môi trường (khắc phục lỗi 404 trên Render)
             app.UseSwagger();
             app.UseSwaggerUI();
 
+            // 2. Chuyển hướng (Redirect) đường dẫn gốc ("/") đến Swagger UI
+            app.MapGet("/", context =>
+            {
+                context.Response.Redirect("/swagger");
+                return Task.CompletedTask;
+            });
+
             if (app.Environment.IsDevelopment())
             {
-                // Bạn có thể đặt các thiết lập Dev khác ở đây nếu cần, nhưng không cần cho Swagger
+                // Có thể thêm các thiết lập chỉ dành cho Dev ở đây, ví dụ: chi tiết lỗi.
             }
 
             app.UseHttpsRedirection();
