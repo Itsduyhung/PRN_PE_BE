@@ -33,6 +33,7 @@ namespace PRN_PE.Services
             {
                 Name = request.Name,
                 Description = request.Description,
+                Rating = request.Rating,
                 ImageUrl = imageUrl
             };
 
@@ -69,6 +70,7 @@ namespace PRN_PE.Services
 
             existing.Name = request.Name;
             existing.Description = request.Description;
+            existing.Rating = request.Rating;
             existing.UpdatedAt = DateTime.UtcNow;
 
             if (request.ImageFile != null)
@@ -88,6 +90,7 @@ namespace PRN_PE.Services
                 Id = e.Id,
                 Name = e.Name,
                 Description = e.Description,
+                Rating = e.Rating,
                 ImageUrl = e.ImageUrl,
                 CreatedAt = e.CreatedAt,
                 UpdatedAt = e.UpdatedAt

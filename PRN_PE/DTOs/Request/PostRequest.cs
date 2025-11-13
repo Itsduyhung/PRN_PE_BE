@@ -13,5 +13,8 @@ namespace PRN_PE.DTOs.Request
 
         // Only allow file upload
         public IFormFile? ImageFile { get; set; }
+        // Optional initial rating (1.0 - 5.0). Use decimal to allow half-stars.
+        [Range(1.00, 5.00)]
+        public decimal? Rating { get; set; }
     }
 }

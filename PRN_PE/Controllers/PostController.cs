@@ -44,6 +44,7 @@ namespace PRN_PE.Controllers
         [RequestSizeLimit(10_000_000)]
         public async Task<IActionResult> Update(Guid id, [FromForm] PostRequest request)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             var updated = await _service.UpdateAsync(id, request);
             if (updated == null) return NotFound();
             return Ok(updated);
